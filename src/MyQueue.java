@@ -1,6 +1,3 @@
-import java.util.Arrays;
-import java.util.Scanner;
- 
 /**
  * Queue (FIFO - First In, First Out) built manually as a circular array.
  * The array doubles in size when it becomes full, so enqueue never fails.
@@ -48,4 +45,23 @@ public class MyQueue {
         front = 0;
         rear = count;
     }
+    /** Removes and returns the front value. O(1). Fails clearly if the queue is empty. */
+    public int dequeue() {
+        if (isEmpty()) {
+            throw new IllegalStateException("Queue Underflow: the queue is empty, nothing to dequeue.");
+        }
+        int value = data[front];
+        front = (front + 1) % data.length;
+        count--;
+        return value;
+    }
+ 
+    /** Returns the front value without removing it. O(1). */
+    public int peek() {
+        if (isEmpty()) {
+            throw new IllegalStateException("Queue is empty: there is no front element.");
+        }
+        return data[front];
+    }
+
 }

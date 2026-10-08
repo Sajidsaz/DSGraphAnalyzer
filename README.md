@@ -15,7 +15,16 @@ comparison.
 - *Student ID:* 23DA2-1000
 - *Assigned Responsibility:* Array and Searching
 - *Individual Contribution:*
-  - (Member 1 completes this)
+  - **Individual Contribution:**
+  - Implemented the ArrayOps class (insert at end/position, delete, display)
+  - Implemented insertion sort and the sorted-data check
+  - Implemented SearchResult, linear search and binary search with step counting
+  - Built the Array and Searching submenus with input validation
+  - Added the linear vs binary comparison on large data
+  - Recorded results in ResultLog and tested all array and search cases
+  - Reviewed and merged Member 2's pull request
+
+
  
 ### Member 2
 - *Student Name:* MF Hasan

@@ -51,4 +51,38 @@ public class ArrayOps {
     public int insertAtEnd(int value) {
         return insertAt(size, value);
     }
+
+        /**
+     * Deletes the element at index (0 to size-1). Elements on the right move one place left.
+     * Returns the number of elements shifted, or -1 if the delete is not possible.
+     */
+    public int deleteAt(int index) {
+        if (isEmpty() || index < 0 || index >= size) {
+            return -1;
+        }
+        int shifts = 0;
+        for (int i = index; i < size - 1; i++) {
+            data[i] = data[i + 1];
+            shifts++;
+        }
+        size--;
+        return shifts;
+    }
+ 
+    public void display() {
+        if (isEmpty()) {
+            System.out.println("Array is empty.");
+            return;
+        }
+        System.out.println("Array (" + size + " of " + CAPACITY + " used):");
+        StringBuilder line = new StringBuilder("Index: ");
+        StringBuilder values = new StringBuilder("Value: ");
+        for (int i = 0; i < size; i++) {
+            line.append(String.format("%5d", i));
+            values.append(String.format("%5d", data[i]));
+        }
+        System.out.println(line);
+        System.out.println(values);
+    }
+
 }

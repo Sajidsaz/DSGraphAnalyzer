@@ -95,6 +95,7 @@ public class Graph {
             System.out.println(line);
         }
     }
+ 
     /**
      * Breadth-First Search from the start vertex. Uses our own MyQueue.
      * Visits vertices level by level. Time complexity O(V + E).
@@ -131,7 +132,8 @@ public class Graph {
         long elapsed = System.nanoTime() - begin;
         return new TraversalResult("BFS", order.toString(), visitedCount, steps, elapsed);
     }
-        /**
+ 
+    /**
      * Depth-First Search from the start vertex. Uses our own MyStack.
      * Goes as deep as possible before backing up. Time complexity O(V + E).
      * Steps = vertices taken from the stack + neighbours checked.
@@ -172,47 +174,126 @@ public class Graph {
         long elapsed = System.nanoTime() - begin;
         return new TraversalResult("DFS", order.toString(), visitedCount, steps, elapsed);
     }
-        /**
-     * Depth-First Search from the start vertex. Uses our own MyStack.
-     * Goes as deep as possible before backing up. Time complexity O(V + E).
-     * Steps = vertices taken from the stack + neighbours checked.
-     */
-    public TraversalResult dfs(int start) {
-        long begin = System.nanoTime();
-        boolean[] visited = new boolean[names.size()];
-        MyStack stack = new MyStack();
-        StringBuilder order = new StringBuilder();
-        long steps = 0;
-        int visitedCount = 0;
  
-        stack.push(start);
+    /** Replaces the graph with a small map of Sri Lankan cities, handy for demos. */
+    public void loadSampleGraph() {
+        clear();
+        String[] cities = {"Colombo", "Kandy", "Galle", "Matara", "Kurunegala",
+                "Anuradhapura", "Jaffna", "Trincomalee"};
+        for (String city : cities) {
+            addVertex(city);
+        }
+        addEdge(indexOf("Colombo"), indexOf("Kandy"));
+        addEdge(indexOf("Colombo"), indexOf("Galle"));
+        addEdge(indexOf("Colombo"), indexOf("Kurunegala"));
+        addEdge(indexOf("Galle"), indexOf("Matara"));
+        addEdge(indexOf("Kandy"), indexOf("Kurunegala"));
+        addEdge(indexOf("Kandy"), indexOf("Trincomalee"));
+        addEdge(indexOf("Kurunegala"), indexOf("Anuradhapura"));
+        addEdge(indexOf("Anuradhapura"), indexOf("Jaffna"));
+        addEdge(indexOf("Anuradhapura"), indexOf("Trincomalee"));
+    }
  
-        while (!stack.isEmpty()) {
-            int current = stack.pop();
-            steps++;
-            if (visited[current]) {
-                continue;                           // already visited through another path
-            }
-            visited[current] = true;
-            if (visitedCount > 0) {
-                order.append(" -> ");
-            }
-            order.append(names.get(current));
-            visitedCount++;
+    private void printTraversal(TraversalResult result) {
+        System.out.println(result.getAlgorithm() + " order: " + result.getOrder());
+        System.out.println("Vertices visited: " + result.getVisitedCount() + " of " + names.size());
+        System.out.println("Steps: " + String.format("%,d", result.getSteps())
+                + " | Time: " + ResultLog.formatTime(result.getTimeNanos()) + " ns");
+    }
  
-            // Push neighbours in reverse so the first neighbour is visited first
-            ArrayList<Integer> neighbours = adjacency.get(current);
-            for (int i = neighbours.size() - 1; i >= 0; i--) {
-                steps++;
-                int neighbour = neighbours.get(i);
-                if (!visited[neighbour]) {
-                    stack.push(neighbour);
+    /** Asks for a start vertex. Returns its index, or -1 if the vertex does not exist. */
+    private int askStartVertex(Scanner sc) {
+        String name = InputUtil.readNonEmpty(sc, "Enter start vertex: ");
+        int index = indexOf(name);
+        if (index == -1) {
+            System.out.println("Vertex \"" + name + "\" does not exist. "
+                    + "Use option 3 to see the vertices.");
+        }
+        return index;
+    }
+ 
+    /** Graph submenu. Returns when the user chooses "Return to Main Menu". */
+    public void runMenu(Scanner sc) {
+        boolean back = false;
+        while (!back) {
+            System.out.println();
+            System.out.println("--------------- GRAPH OPERATIONS ---------------");
+            System.out.println("1. Add Vertex");
+            System.out.println("2. Add Edge");
+            System.out.println("3. Display Graph");
+            System.out.println("4. BFS Traversal");
+            System.out.println("5. DFS Traversal");
+            System.out.println("6. Load Sample Graph (Sri Lankan cities)");
+            System.out.println("7. Return to Main Menu");
+            int choice = InputUtil.readInt(sc, "Enter your choice: ");
+ 
+            switch (choice) {
+                case 1 -> {
+                    String name = InputUtil.readNonEmpty(sc, "Enter vertex name: ");
+                    if (addVertex(name)) {
+                        System.out.println("Vertex \"" + name.trim() + "\" added.");
+                    } else {
+                        System.out.println("Vertex \"" + name.trim() + "\" already exists.");
+                    }
                 }
+                case 2 -> {
+                    if (names.size() < 2) {
+                        System.out.println("You need at least 2 vertices before adding an edge.");
+                    } else {
+                        String first = InputUtil.readNonEmpty(sc, "Enter first vertex: ");
+                        String second = InputUtil.readNonEmpty(sc, "Enter second vertex: ");
+                        int u = indexOf(first);
+                        int v = indexOf(second);
+                        if (u == -1 || v == -1) {
+                            System.out.println("Both vertices must already exist. "
+                                    + "Use option 3 to see them.");
+                        } else if (u == v) {
+                            System.out.println("A vertex cannot be connected to itself.");
+                        } else if (hasEdge(u, v)) {
+                            System.out.println("That edge already exists.");
+                        } else {
+                            addEdge(u, v);
+                            System.out.println("Edge added: " + getName(u) + " <-> " + getName(v));
+                        }
+                    }
+                }
+                case 3 -> display();
+                case 4 -> {
+                    if (names.isEmpty()) {
+                        System.out.println("Graph is empty. Add vertices first "
+                                + "or load the sample graph.");
+                    } else {
+                        int start = askStartVertex(sc);
+                        if (start != -1) {
+                            TraversalResult result = bfs(start);
+                            printTraversal(result);
+                            ResultLog.add("Graph Traversal", "BFS",
+                                    result.getSteps(), result.getTimeNanos());
+                        }
+                    }
+                }
+                case 5 -> {
+                    if (names.isEmpty()) {
+                        System.out.println("Graph is empty. Add vertices first "
+                                + "or load the sample graph.");
+                    } else {
+                        int start = askStartVertex(sc);
+                        if (start != -1) {
+                            TraversalResult result = dfs(start);
+                            printTraversal(result);
+                            ResultLog.add("Graph Traversal", "DFS",
+                                    result.getSteps(), result.getTimeNanos());
+                        }
+                    }
+                }
+                case 6 -> {
+                    loadSampleGraph();
+                    System.out.println("Sample graph loaded: " + names.size()
+                            + " cities, " + edgeCount + " roads.");
+                }
+                case 7 -> back = true;
+                default -> System.out.println("Invalid choice. Please enter a number from 1 to 7.");
             }
         }
-        long elapsed = System.nanoTime() - begin;
-        return new TraversalResult("DFS", order.toString(), visitedCount, steps, elapsed);
     }
-
-
 }

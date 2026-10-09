@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
  
 /**
  * Undirected graph stored as an adjacency list.
@@ -130,5 +131,88 @@ public class Graph {
         long elapsed = System.nanoTime() - begin;
         return new TraversalResult("BFS", order.toString(), visitedCount, steps, elapsed);
     }
+        /**
+     * Depth-First Search from the start vertex. Uses our own MyStack.
+     * Goes as deep as possible before backing up. Time complexity O(V + E).
+     * Steps = vertices taken from the stack + neighbours checked.
+     */
+    public TraversalResult dfs(int start) {
+        long begin = System.nanoTime();
+        boolean[] visited = new boolean[names.size()];
+        MyStack stack = new MyStack();
+        StringBuilder order = new StringBuilder();
+        long steps = 0;
+        int visitedCount = 0;
+ 
+        stack.push(start);
+ 
+        while (!stack.isEmpty()) {
+            int current = stack.pop();
+            steps++;
+            if (visited[current]) {
+                continue;                           // already visited through another path
+            }
+            visited[current] = true;
+            if (visitedCount > 0) {
+                order.append(" -> ");
+            }
+            order.append(names.get(current));
+            visitedCount++;
+ 
+            // Push neighbours in reverse so the first neighbour is visited first
+            ArrayList<Integer> neighbours = adjacency.get(current);
+            for (int i = neighbours.size() - 1; i >= 0; i--) {
+                steps++;
+                int neighbour = neighbours.get(i);
+                if (!visited[neighbour]) {
+                    stack.push(neighbour);
+                }
+            }
+        }
+        long elapsed = System.nanoTime() - begin;
+        return new TraversalResult("DFS", order.toString(), visitedCount, steps, elapsed);
+    }
+        /**
+     * Depth-First Search from the start vertex. Uses our own MyStack.
+     * Goes as deep as possible before backing up. Time complexity O(V + E).
+     * Steps = vertices taken from the stack + neighbours checked.
+     */
+    public TraversalResult dfs(int start) {
+        long begin = System.nanoTime();
+        boolean[] visited = new boolean[names.size()];
+        MyStack stack = new MyStack();
+        StringBuilder order = new StringBuilder();
+        long steps = 0;
+        int visitedCount = 0;
+ 
+        stack.push(start);
+ 
+        while (!stack.isEmpty()) {
+            int current = stack.pop();
+            steps++;
+            if (visited[current]) {
+                continue;                           // already visited through another path
+            }
+            visited[current] = true;
+            if (visitedCount > 0) {
+                order.append(" -> ");
+            }
+            order.append(names.get(current));
+            visitedCount++;
+ 
+            // Push neighbours in reverse so the first neighbour is visited first
+            ArrayList<Integer> neighbours = adjacency.get(current);
+            for (int i = neighbours.size() - 1; i >= 0; i--) {
+                steps++;
+                int neighbour = neighbours.get(i);
+                if (!visited[neighbour]) {
+                    stack.push(neighbour);
+                }
+            }
+        }
+        long elapsed = System.nanoTime() - begin;
+        return new TraversalResult("DFS", order.toString(), visitedCount, steps, elapsed);
+    }
+
 
 }

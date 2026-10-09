@@ -94,4 +94,41 @@ public class Graph {
             System.out.println(line);
         }
     }
+    /**
+     * Breadth-First Search from the start vertex. Uses our own MyQueue.
+     * Visits vertices level by level. Time complexity O(V + E).
+     * Steps = vertices taken from the queue + neighbours checked.
+     */
+    public TraversalResult bfs(int start) {
+        long begin = System.nanoTime();
+        boolean[] visited = new boolean[names.size()];
+        MyQueue queue = new MyQueue();
+        StringBuilder order = new StringBuilder();
+        long steps = 0;
+        int visitedCount = 0;
+ 
+        visited[start] = true;
+        queue.enqueue(start);
+ 
+        while (!queue.isEmpty()) {
+            int current = queue.dequeue();
+            steps++;
+            if (visitedCount > 0) {
+                order.append(" -> ");
+            }
+            order.append(names.get(current));
+            visitedCount++;
+ 
+            for (int neighbour : adjacency.get(current)) {
+                steps++;
+                if (!visited[neighbour]) {
+                    visited[neighbour] = true;      // mark when added, so it is queued only once
+                    queue.enqueue(neighbour);
+                }
+            }
+        }
+        long elapsed = System.nanoTime() - begin;
+        return new TraversalResult("BFS", order.toString(), visitedCount, steps, elapsed);
+    }
+
 }

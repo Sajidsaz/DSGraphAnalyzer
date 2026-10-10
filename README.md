@@ -43,8 +43,15 @@ comparison.
 - Student Name: S. Sajidh Ahamad
 - Student ID: 23DA2-0840
 - Assigned Responsibility: Linked List, Main Menu and Integration
-- Individual Contribution:
-  - (Member 3 completes this)
+- **Individual Contribution:**
+  - Created the GitHub repository, .gitignore, README structure and project layout
+  - Implemented InputUtil (shared input validation) and ResultLog (shared results store)
+  - Implemented Node and MyLinkedList (insert at head/tail/position, delete, search, display)
+  - Built the Linked List submenu with step counting and empty-list handling
+  - Built the Main menu and integrated all components into one application
+  - Wrote the README sections and TESTING.md, and tested the full system
+  - Reviewed and merged Member 4's pull request
+
  
 ### Member 4
 - Student Name: AM Naashir

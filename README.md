@@ -43,8 +43,15 @@ comparison.
 - Student Name: S. Sajidh Ahamad
 - Student ID: 23DA2-0840
 - Assigned Responsibility: Linked List, Main Menu and Integration
-- Individual Contribution:
-  - (Member 3 completes this)
+- **Individual Contribution:**
+  - Created the GitHub repository, .gitignore, README structure and project layout
+  - Implemented InputUtil (shared input validation) and ResultLog (shared results store)
+  - Implemented Node and MyLinkedList (insert at head/tail/position, delete, search, display)
+  - Built the Linked List submenu with step counting and empty-list handling
+  - Built the Main menu and integrated all components into one application
+  - Wrote the README sections and TESTING.md, and tested the full system
+  - Reviewed and merged Member 4's pull request
+
  
 ### Member 4
 - Student Name: AM Naashir
@@ -58,3 +65,38 @@ comparison.
   - Implemented PerformanceAnalyzer (searching and graph traversal comparison)
   - Tested graph and performance functionality
   - Reviewed and merged Member 3's pull request
+
+## Technologies Used
+- Java 17 or newer (console application, no external libraries)
+- Git and GitHub (branches, commits, pull requests)
+ 
+## Main System Features
+- Array: insert, delete, search, display, insertion sort
+- Stack: push, pop, peek, display (array based, LIFO)
+- Queue: enqueue, dequeue, peek, display (circular array, FIFO)
+- Linked List: insert (head, tail, position), delete, search, display
+- Searching: linear search and binary search with step and time comparison
+- Graph: add vertex, add edge, display, BFS and DFS (adjacency list)
+- Performance Comparison: steps and execution time for searching and graph traversal
+- Display All Results: history of every recorded operation
+- Input validation and empty-structure handling in every menu
+ 
+## How to Run
+1. Install a JDK (Java 17 or newer). Check with: java -version
+2. Clone the repository:
+   git clone https://github.com/Sajidsaz/DSGraphAnalyzer.git
+3. Go into the folder:
+   cd DSGraphAnalyzer
+4. Compile:
+   javac -d bin src/*.java
+5. Run:
+   java -cp bin Main
+ 
+## Performance Summary
+| Operation | Algorithm | Complexity |
+|---|---|---|
+| Array / linked list search | Linear search | O(n) |
+| Sorted array search | Binary search | O(log n) |
+| Graph traversal | BFS (queue) | O(V + E) |
+| Graph traversal | DFS (stack) | O(V + E) |
+| Stack push/pop, queue enqueue/dequeue | - | O(1) |

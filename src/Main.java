@@ -1,15 +1,22 @@
 import java.util.Scanner;
-
+ 
 /**
  * Main console application. Shows the main menu and calls each component.
- * (Skeleton version: components are connected during integration.)
  */
-
-public class Main{
+public class Main {
+ 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+ 
+        // One object per data structure, shared for the whole run
+        ArrayOps array = new ArrayOps();
+        MyStack stack = new MyStack();
+        MyQueue queue = new MyQueue();
+        MyLinkedList linkedList = new MyLinkedList();
+        Graph graph = new Graph();
+ 
         boolean running = true;
-
+ 
         while (running) {
             System.out.println();
             System.out.println("=============================================");
@@ -25,20 +32,22 @@ public class Main{
             System.out.println("8. Display All Results");
             System.out.println("9. Exit");
             int choice = InputUtil.readInt(sc, "Enter your choice: ");
-
+ 
             switch (choice) {
-                case 1 -> System.out.println("Array module coming soon.");
-                case 2 -> System.out.println("Stack module coming soon.");
-                case 3 -> System.out.println("Queue module coming soon.");
-                case 4 -> System.out.println("Linked List module coming soon.");
-                case 5 -> System.out.println("Searching module coming soon.");
-                case 6 -> System.out.println("Graph module coming soon.");
-                case 7 -> System.out.println("Performance module coming soon.");
+                case 1 -> array.runMenu(sc);
+                case 2 -> stack.runMenu(sc);
+                case 3 -> queue.runMenu(sc);
+                case 4 -> linkedList.runMenu(sc);
+                case 5 -> SearchOps.runMenu(sc, array);
+                case 6 -> graph.runMenu(sc);
+                case 7 -> PerformanceAnalyzer.runMenu(sc);
                 case 8 -> ResultLog.printAll();
                 case 9 -> running = false;
                 default -> System.out.println("Invalid choice. Please enter a number from 1 to 9.");
-
             }
         }
+ 
+        System.out.println("Thank you for using the analyzer. Goodbye!");
+        sc.close();
     }
 }
